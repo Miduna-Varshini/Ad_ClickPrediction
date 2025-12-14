@@ -144,3 +144,4 @@ if st.button("🔮 Predict Click"):
 # Footer
 # ---------------------------------
 st.markdown("<div style='text-align:center;margin-top:30px;'>Made with ❤️ using Streamlit & Machine Learning</div>", unsafe_allow_html=True)
+
