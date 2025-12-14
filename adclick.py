@@ -110,32 +110,38 @@ if st.button("🔮 Predict Click"):
         "time_of_day": time_of_day
     }])
 
+    # One-hot encode and align features
     input_encoded = pd.get_dummies(input_data)
     input_encoded = input_encoded.reindex(columns=feature_cols, fill_value=0)
 
     # Prediction
     prediction = model.predict(input_encoded)[0]
-    probability = model.predict_proba(input_encoded)[0][1]  # probability of click (1)
+    probability = model.predict_proba(input_encoded)[0][1]  # probability of click
 
     # YES / NO result
     result_text = "✅ YES" if prediction == 1 else "❌ NO"
     st.markdown("### 🧾 Final Prediction")
     st.markdown(f"<h2 style='text-align:center;color:#ffd700;'>{result_text}</h2>", unsafe_allow_html=True)
 
-    # Probability bar
+    # Probability progress bar
     st.markdown("### 📊 Click Probability")
     st.progress(float(probability))
 
-    # Feature contribution bar chart (simple visualization)
-    st.markdown("### 📈 Feature Contribution")
-    feature_values = input_encoded.T[input_encoded.T.columns[0]].sort_values(ascending=False)
-    plt.figure(figsize=(8, 4))
-    feature_values.plot(kind="barh", color="#00e5ff")
-    plt.title("Feature Values for This User", color="white")
-    plt.xlabel("Value")
-    plt.gca().invert_yaxis()
-    plt.tight_layout()
-    st.pyplot(plt)
+    # Feature contribution bar chart (safe)
+    st.markdown("### 📈 Feature Values for This User")
+    numeric_features = input_encoded.select_dtypes(include=['int64', 'float64']).T
+    numeric_features = numeric_features[numeric_features[0] != 0]  # remove zero-value features
+
+    if not numeric_features.empty:
+        plt.figure(figsize=(8, max(4, len(numeric_features)*0.5)))
+        numeric_features[0].sort_values().plot(kind="barh", color="#00e5ff")
+        plt.title("Active Features for This User", color="white")
+        plt.xlabel("Value")
+        plt.gca().invert_yaxis()
+        plt.tight_layout()
+        st.pyplot(plt)
+    else:
+        st.info("No active numeric features to display for this user.")
 
 # ---------------------------------
 # Footer
