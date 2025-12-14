@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # ---------------------------------
 # Page Configuration
@@ -51,11 +52,6 @@ button[kind="primary"]:hover {
     background: linear-gradient(90deg, #6dd5ed, #2193b0);
     color: black !important;
 }
-
-/* Progress bar */
-.css-1aumxhk {
-    background-color: #00e5ff !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -86,7 +82,6 @@ st.divider()
 # Input Section
 # ---------------------------------
 st.subheader("👤 User Information")
-
 full_name = st.selectbox("Full Name", ["User001", "User002", "User003", "User004", "User005"])
 age = st.selectbox("Age", list(range(18, 70)))
 gender = st.selectbox("Gender", ["Male", "Female", "Non-Binary", "Unknown"])
@@ -100,7 +95,6 @@ st.divider()
 # Prediction
 # ---------------------------------
 if st.button("🔮 Predict Click"):
-    # Prepare input
     input_data = pd.DataFrame([{
         "age": age,
         "gender": gender,
@@ -110,34 +104,37 @@ if st.button("🔮 Predict Click"):
         "time_of_day": time_of_day
     }])
 
-    # One-hot encode and align features
+    # Encode features
     input_encoded = pd.get_dummies(input_data)
     input_encoded = input_encoded.reindex(columns=feature_cols, fill_value=0)
 
-    # Prediction
+    # Predict
     prediction = model.predict(input_encoded)[0]
-    probability = model.predict_proba(input_encoded)[0][1]  # probability of click
+    probability = model.predict_proba(input_encoded)[0][1]  # click probability
 
-    # YES / NO result
+    # YES/NO Result
     result_text = "✅ YES" if prediction == 1 else "❌ NO"
     st.markdown("### 🧾 Final Prediction")
     st.markdown(f"<h2 style='text-align:center;color:#ffd700;'>{result_text}</h2>", unsafe_allow_html=True)
 
-    # Probability progress bar
+    # Probability Bar with Score
     st.markdown("### 📊 Click Probability")
     st.progress(float(probability))
+    st.markdown(f"<p style='text-align:center;font-size:18px;'>Probability Score: <b>{probability*100:.2f}%</b></p>", unsafe_allow_html=True)
 
-    # Feature contribution bar chart (safe)
+    # Professional Feature Contribution Graph
     st.markdown("### 📈 Feature Values for This User")
     numeric_features = input_encoded.select_dtypes(include=['int64', 'float64']).T
-    numeric_features = numeric_features[numeric_features[0] != 0]  # remove zero-value features
+    numeric_features = numeric_features[numeric_features[0] != 0]
 
     if not numeric_features.empty:
         plt.figure(figsize=(8, max(4, len(numeric_features)*0.5)))
-        numeric_features[0].sort_values().plot(kind="barh", color="#00e5ff")
-        plt.title("Active Features for This User", color="white")
-        plt.xlabel("Value")
-        plt.gca().invert_yaxis()
+        sns.barplot(x=numeric_features[0].values, y=numeric_features.index, palette="coolwarm")
+        plt.title("Active Feature Values", color="white", fontsize=14)
+        plt.xlabel("Value", color="white")
+        plt.ylabel("Feature", color="white")
+        plt.xticks(color="white")
+        plt.yticks(color="white")
         plt.tight_layout()
         st.pyplot(plt)
     else:
