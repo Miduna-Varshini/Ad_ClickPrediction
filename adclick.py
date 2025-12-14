@@ -14,66 +14,74 @@ st.set_page_config(
 # ---------------------------------
 # Custom CSS
 # ---------------------------------
-st.markdown("""
-<style>
-/* Main background */
-.stApp {
-    background: linear-gradient(135deg, #f0f4ff, #e6fff2);
-}
+st.markdown(
+    """
+    <style>
+    /* MAIN BACKGROUND */
+    .stApp {
+        background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+        color: white;
+    }
 
-/* Title */
-h1 {
-    color: #1e8449;
-    font-weight: 700;
-}
+    /* SIDEBAR */
+    section[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #141e30, #243b55);
+        color: white;
+    }
 
-/* Sub headers */
-h3 {
-    color: #145a32;
-}
+    /* HEADINGS */
+    h1, h2, h3, h4 {
+        color: #e6f2ff;
+        font-weight: 700;
+    }
 
-/* Input labels */
-label {
-    font-weight: 600;
-    color: #2c3e50;
-}
+    /* LABELS */
+    label {
+        color: #e0eafc !important;
+        font-weight: 600;
+    }
 
-/* Button styling */
-.stButton > button {
-    background: linear-gradient(90deg, #27ae60, #2ecc71);
-    color: white;
-    border-radius: 12px;
-    padding: 0.6em 1.5em;
-    font-size: 16px;
-    border: none;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.15);
-}
+    /* SELECT BOX / INPUT */
+    div[data-baseweb="select"] > div {
+        background-color: #1e1e2f !important;
+        color: white !important;
+        border-radius: 12px;
+        border: 1px solid #3a7bd5;
+    }
 
-.stButton > button:hover {
-    background: linear-gradient(90deg, #1e8449, #27ae60);
-    transform: scale(1.02);
-}
+    /* DROPDOWN OPTIONS */
+    ul {
+        background-color: #1e1e2f !important;
+        color: white !important;
+    }
 
-/* Success box */
-.stSuccess {
-    background-color: #e9f7ef !important;
-    border-left: 6px solid #27ae60;
-}
+    /* BUTTON */
+    button[kind="primary"] {
+        background: linear-gradient(90deg, #2193b0, #6dd5ed);
+        color: black !important;
+        border-radius: 14px;
+        font-weight: bold;
+        padding: 10px 25px;
+        border: none;
+    }
 
-/* Divider */
-hr {
-    border: 1px solid #d5f5e3;
-}
+    button[kind="primary"]:hover {
+        background: linear-gradient(90deg, #6dd5ed, #2193b0);
+        color: black !important;
+    }
 
-/* Footer */
-.footer {
-    text-align: center;
-    font-size: 12px;
-    color: #7f8c8d;
-}
-</style>
-""", unsafe_allow_html=True)
+    /* SUCCESS BOX */
+    .stSuccess {
+        background-color: rgba(0, 255, 255, 0.15);
+        border-left: 6px solid #00e5ff;
+        color: white;
+        font-size: 18px;
+    }
 
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # ---------------------------------
 # Load Model & Features
 # ---------------------------------
@@ -178,3 +186,4 @@ st.markdown(
     "<div class='footer'>Made with ❤️ using Streamlit & Machine Learning</div>",
     unsafe_allow_html=True
 )
+
