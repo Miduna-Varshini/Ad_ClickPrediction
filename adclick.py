@@ -123,25 +123,11 @@ if st.button("🔮 Predict Click"):
     st.markdown(f"<p style='text-align:center;font-size:18px;'>Probability Score: <b>{probability*100:.2f}%</b></p>", unsafe_allow_html=True)
 
     # Professional Feature Contribution Graph
-    st.markdown("### 📈 Feature Values for This User")
-    numeric_features = input_encoded.select_dtypes(include=['int64', 'float64']).T
-    numeric_features = numeric_features[numeric_features[0] != 0]
-
-    if not numeric_features.empty:
-        plt.figure(figsize=(8, max(4, len(numeric_features)*0.5)))
-        sns.barplot(x=numeric_features[0].values, y=numeric_features.index, palette="coolwarm")
-        plt.title("Active Feature Values", color="white", fontsize=14)
-        plt.xlabel("Value", color="white")
-        plt.ylabel("Feature", color="white")
-        plt.xticks(color="white")
-        plt.yticks(color="white")
-        plt.tight_layout()
-        st.pyplot(plt)
-    else:
-        st.info("No active numeric features to display for this user.")
+   
 
 # ---------------------------------
 # Footer
 # ---------------------------------
 st.markdown("<div style='text-align:center;margin-top:30px;'>Made with ❤️ using Streamlit & Machine Learning</div>", unsafe_allow_html=True)
+
 
